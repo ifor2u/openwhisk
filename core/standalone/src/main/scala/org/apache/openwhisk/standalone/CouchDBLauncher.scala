@@ -104,7 +104,7 @@ class CouchDBLauncher(docker: StandaloneDockerClient, port: Int, dataDir: File)(
 
   def waitForCouchDB(): Future[Done] = {
     new ServerStartupCheck(Uri(s"http://${StandaloneDockerSupport.getLocalHostName()}:$port/_utils/"), "CouchDB")
-      .waitForServerToStart()
+      .waitForServerToStart(300)
     Future.successful(Done)
   }
 

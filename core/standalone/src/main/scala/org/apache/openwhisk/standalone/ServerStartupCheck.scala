@@ -27,12 +27,16 @@ import scala.concurrent.duration._
 
 class ServerStartupCheck(uri: Uri, serverName: String) {
 
-  def waitForServerToStart(): Unit = {
+  def waitForServerToStart(timeout: Int): Unit = {
     val w = Stopwatch.createStarted()
     retry({
       println(s"Waiting for $serverName server at $uri to start since $w")
       require(getResponseCode() == 200)
-    }, 30, Some(1.second))
+    }, timeout, Some(1.second))
+  }
+
+  def waitForServerToStart(): Unit = {
+    waitForServerToStart(30)
   }
 
   private def getResponseCode(): Int = {
